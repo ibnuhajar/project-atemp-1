@@ -9,10 +9,39 @@ class App
 
 
     public function __construct() {
-        
 
+         $url= $this->parseURL();
 
+        //  cek Controller
+         if (file_exists('../app/controllers'. $url[0] .'.php')) {
+             $this->$controller = $url[0];
+             unset($url[0]);
+         }
+
+         require_once '../app/controllers'. $this->$controller .'.php';
+         $this->controller = new $this->$controller;
+
+        //  cek method
+        if(isset($url[1])){
+            if ( file_method ($this->controler,$url[1]) ) {
+                $this->method = $url[1];
+                unset($url[1]);
+            }
+        }
+
+        // cek parameter
+        if(!empty($url)){
+            $this->params = array_values($url);
+        }
+
+        // setelah semua di cek , panggil semua kontroller , method dan parameter 
+        call_user_func_array([$this->controller,$this->method],$this->$params);
     }
+
+
+
+
+
 
     public function parseURL()
     {
@@ -23,8 +52,6 @@ class App
             return $url;
         }
     }
-
-
 }
     
 
