@@ -13,13 +13,15 @@ class App
          $url= $this->parseURL();
 
         //  cek Controller
-         if (file_exists('../app/controllers'. $url[0] .'.php')) {
+         if (file_exists('../app/controllers/'. $url[0] .'.php')) {
              $this->$controller = $url[0];
              unset($url[0]);
          }
 
-         require_once '../app/controllers'. $this->$controller .'.php';
-         $this->controller = new $this->$controller;
+        //  require_once '../app/controllers/' . $this->controller . '.php';
+        //  $this->controller  = new $this->controller ;
+         require_once '../app/controllers/' . $this->controller . '.php';
+         $this->controller = new $this->controller;
 
         //  cek method
         if(isset($url[1])){
@@ -35,7 +37,7 @@ class App
         }
 
         // setelah semua di cek , panggil semua kontroller , method dan parameter 
-        call_user_func_array([$this->controller,$this->method],$this->$params);
+        call_user_func_array([$this->controller, $this->method],$this->params);
     }
 
 
